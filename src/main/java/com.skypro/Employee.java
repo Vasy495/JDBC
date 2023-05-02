@@ -1,13 +1,22 @@
 package com.skypro;
 
+import javax.persistence.*;
 import java.util.Objects;
 
+@Entity
+@Table(name = "employee")
 public class Employee {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+    @Column(name = "first_name")
     private String firstName;
+    @Column(name = "last_name")
     private String lastName;
     private String gender;
     private int age;
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "city_id")
     private City city;
 
     public Employee() {
@@ -78,13 +87,16 @@ public class Employee {
         this.city = city;
     }
 
-    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Employee employee = (Employee) o;
-        return id == employee.id && age == employee.age && firstName.equals(employee.firstName) &&
-                lastName.equals(employee.lastName) && gender.equals(employee.gender) &&
+        return id == employee.id &&
+                age == employee.age &&
+                city == employee.city &&
+                firstName.equals(employee.firstName) &&
+                lastName.equals(employee.lastName) &&
+                gender.equals(employee.gender) &&
                 city.equals(employee.city);
     }
 
